@@ -56,27 +56,29 @@ void AJsonGameMode::SpawnOrUpdateOrb()
 
 bool AJsonGameMode::LoadOrbState(FOrbStateData& OutData)
 {
-	FString FilePath;
-	FString ProjectFilePath = FPaths::ProjectDir() + TEXT("entity_state.json");
-	FString AbsoluteTestPath = TEXT("C:/Programming/task/entity_state.json"); 
+	FString ExeDirectory = FPaths::GetPath(FPlatformProcess::ExecutableName());
+	FString FilePath = FPaths::Combine(*ExeDirectory, TEXT("entity_state.json"));
+	FString AbsoluteTestPath = TEXT("C:/Programming/task/entity_state.json");
 
-	if (FPaths::FileExists(ProjectFilePath))
-	{
-		FilePath = ProjectFilePath;
-		UE_LOG(LogTemp, Log, TEXT("AJsonGameMode: Using project directory path: %s"), *FilePath);
-	}
 	
-	else if (FPaths::FileExists(AbsoluteTestPath))
+	if (!FPaths::FileExists(FilePath))
 	{
-		FilePath = AbsoluteTestPath;
-		UE_LOG(LogTemp, Log, TEXT("AJsonGameMode: Using absolute test path: %s"), *FilePath);
+		if (FPaths::FileExists(AbsoluteTestPath))
+		{
+			FilePath = AbsoluteTestPath;
+			UE_LOG(LogTemp, Log, TEXT("AJsonGameMode: Using DEV path: %s"), *FilePath);
+		}
+		else
+		{
+			UE_LOG(LogTemp, Error, TEXT("AJsonGameMode: FAILED TO FIND JSON FILE."));
+			UE_LOG(LogTemp, Error, TEXT("AJsonGameMode: Shipping path checked: %s"), *FilePath);
+			UE_LOG(LogTemp, Error, TEXT("AJsonGameMode: Dev path checked: %s"), *AbsoluteTestPath);
+			return false;
+		}
 	}
 	else
 	{
-		UE_LOG(LogTemp, Error, TEXT("AJsonGameMode: FAILED TO FIND JSON FILE."));
-		UE_LOG(LogTemp, Error, TEXT("AJsonGameMode: Path 1 checked: %s"), *ProjectFilePath);
-		UE_LOG(LogTemp, Error, TEXT("AJsonGameMode: Path 2 checked: %s"), *AbsoluteTestPath);
-		return false;
+		UE_LOG(LogTemp, Log, TEXT("AJsonGameMode: Using SHIPPING path: %s"), *FilePath);
 	}
 
 
