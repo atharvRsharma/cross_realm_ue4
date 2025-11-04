@@ -11,16 +11,16 @@ AGlowingOrb::AGlowingOrb()
 	PrimaryActorTick.bCanEverTick = true;
 
 	OrbMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("OrbMesh"));
-	RootComponent = OrbMesh; 
+	RootComponent = OrbMesh;
 
 	OrbMesh->SetCollisionProfileName(TEXT("BlockAllDynamic"));
-	OrbMesh->SetSimulatePhysics(false); 
-	OrbMesh->SetNotifyRigidBodyCollision(true); 
+	OrbMesh->SetSimulatePhysics(false);
+	OrbMesh->SetNotifyRigidBodyCollision(true);
 
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("ProjectileMovement"));
 
 	ProjectileMovement->InitialSpeed = 0.f;
-	ProjectileMovement->MaxSpeed = 5000.f; 
+	ProjectileMovement->MaxSpeed = 5000.f;
 	ProjectileMovement->bShouldBounce = true;
 	ProjectileMovement->Bounciness = 0.6f;
 
@@ -89,8 +89,8 @@ void AGlowingOrb::OnInteractReleased() { bIsPlayerInteracting = false; }
 
 void AGlowingOrb::OnToggleGravity()
 {
-	/*if (GEngine)
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("TOGGLE GRAVITY PRESSED!"));*/
+	if (GEngine)
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("TOGGLE GRAVITY PRESSED!"));
 
 	bGravityEnabled = !bGravityEnabled;
 
@@ -142,7 +142,7 @@ void AGlowingOrb::Tick(float DeltaTime)
 	if (bGravityEnabled)
 	{
 		FVector vel = ProjectileMovement->Velocity;
-		vel.Z += -980.f * DeltaTime; 
+		vel.Z += -980.f * DeltaTime;
 		ProjectileMovement->Velocity = vel;
 	}
 	else

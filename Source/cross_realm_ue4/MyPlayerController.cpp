@@ -4,7 +4,7 @@
 
 AMyPlayerController::AMyPlayerController()
 {
-	bEnableClickEvents = true;
+	bEnableClickEvents = false;
 	bShowMouseCursor = true;
 }
 
